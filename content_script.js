@@ -122,8 +122,8 @@ function shellackIt(match, p1 = "", p2, p3) {
   return allGourdReenactment(match, p1 + gourd);
 }
 
-function itsFallFuckfaces(textNode) {
-  textNode.nodeValue = textNode.nodeValue.replace(mutantFuckingRegex, shellackIt);
+function itsFallFuckfaces(text) {
+  return text.replace(mutantFuckingRegex, shellackIt);
 }
 
 function BLAMMO(node) {
@@ -145,15 +145,18 @@ function BLAMMO(node) {
       break;
 
     case 3: // text node
-      itsFallFuckfaces(node);
+      node.nodeValue = itsFallFuckfaces(node.nodeValue);
       break;
   }
 }
 
 BLAMMO(document.body);
 
-new MutationObserver(function() {
-  BLAMMO(document.body);
+new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    mutation.addedNodes.forEach(BLAMMO);
+  });
 }).observe(document.body, {
-  childList: true
+  childList: true,
+  subtree: true,
 });
