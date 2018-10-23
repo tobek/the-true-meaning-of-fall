@@ -153,9 +153,11 @@ function BLAMMO(node) {
 BLAMMO(document.body);
 
 new MutationObserver(function(mutations) {
-  mutations.forEach(function(mutation) {
-    mutation.addedNodes.forEach(BLAMMO);
-  });
+  for (var i = mutations.length - 1; i >= 0; i--) {
+    for (var j = mutations[i].addedNodes.length - 1; j >= 0; j--) {
+      BLAMMO(mutations[i].addedNodes[j]);
+    }
+  }
 }).observe(document.body, {
   childList: true,
   subtree: true,
